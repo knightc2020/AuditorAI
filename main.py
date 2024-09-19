@@ -1,15 +1,21 @@
 import logging
+import os
 from flask import Flask, render_template, request, jsonify
-from models.legal_analyzer import LegalAnalyzer
+from models.legal_analyzer import ComplianceAuditor
 from werkzeug.exceptions import RequestTimeout
 import time
+from database import add_assessment, get_assessment_by_input
 
 app = Flask(__name__)
-legal_analyzer = LegalAnalyzer()
+compliance_auditor = ComplianceAuditor()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+# Set up database URL
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 @app.route("/")
 def index():
@@ -29,7 +35,7 @@ def analyze():
             return jsonify({"error": "请输入您的情况描述"}), 400
 
         logger.info("Analyzing input")
-        analysis_result = legal_analyzer.analyze(user_input)
+        analysis_result = compliance_auditor.analyze(user_input)
         logger.info(f"Analysis result: {analysis_result}")
 
         # Check if the request has exceeded the timeout

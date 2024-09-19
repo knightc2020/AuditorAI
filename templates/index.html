@@ -1,27 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legal Compliance Checker</title>
-    <link href="/static/css/tailwind.min.css" rel="stylesheet">
+    <title>企业智能审计系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-6 text-center">Legal Compliance Checker</h1>
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <textarea id="userInput" rows="5" class="w-full p-2 border rounded mb-4" placeholder="Describe your situation or scenario here..."></textarea>
-            <button id="analyzeBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Analyze</button>
-            <div id="result" class="mt-6 hidden">
-                <h2 class="text-xl font-semibold mb-2">Analysis Result:</h2>
-                <div id="legalIssues" class="mb-4"></div>
-                <div id="relevantLaws" class="mb-4"></div>
-            </div>
-            <div id="loading" class="mt-6 hidden">
-                <p class="text-center">Analyzing... Please wait.</p>
-            </div>
+<body class="bg-gray-100 min-h-screen font-sans">
+    <header class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-bold">企业智能审计系统</h1>
         </div>
-    </div>
+    </header>
+    <main class="container mx-auto mt-8 p-4">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold mb-4">审计分析</h2>
+            <textarea id="userInput" rows="5" class="w-full p-2 border rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="请描述您的情况或场景..."></textarea>
+            <button id="analyzeBtn" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200 ease-in-out">分析</button>
+        </div>
+        <div id="result" class="mt-8 bg-white rounded-lg shadow-md p-6 hidden">
+            <h2 class="text-2xl font-semibold mb-4">分析结果</h2>
+            <div id="analysisContent"></div>
+        </div>
+        <div id="loading" class="mt-8 text-center hidden">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+            <p class="mt-2 text-gray-600">正在分析，请稍候...</p>
+        </div>
+    </main>
+    <footer class="bg-gray-200 text-center p-4 mt-8">
+        <p>&copy; 2024 企业智能审计系统. 保留所有权利。</p>
+    </footer>
     <script src="/static/js/app.js"></script>
 </body>
 </html>

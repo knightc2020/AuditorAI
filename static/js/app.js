@@ -2,8 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const analyzeBtn = document.getElementById('analyzeBtn');
     const userInput = document.getElementById('userInput');
     const result = document.getElementById('result');
-    const legalIssues = document.getElementById('legalIssues');
-    const relevantLaws = document.getElementById('relevantLaws');
+    const analysisContent = document.getElementById('analysisContent');
     const loading = document.getElementById('loading');
 
     analyzeBtn.addEventListener('click', async () => {
@@ -17,19 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
         result.classList.add('hidden');
 
         try {
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
-
             const response = await fetch('/analyze', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ input }),
-                signal: controller.signal
             });
-
-            clearTimeout(timeoutId);
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -39,31 +32,44 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             displayResult(data);
         } catch (error) {
-            if (error.name === 'AbortError') {
-                alert('分析超时。请尝试缩短输入文本或稍后重试。');
-            } else {
-                alert(error.message);
-            }
+            alert(error.message);
         } finally {
             loading.classList.add('hidden');
         }
     });
 
     function displayResult(data) {
-        legalIssues.innerHTML = `
-            <h3 class="font-semibold mb-2">潜在法律问题：</h3>
-            <ul class="list-disc pl-5">
-                ${data.legal_issues.map(issue => `<li>${issue}</li>`).join('')}
-            </ul>
-        `;
+        let resultHTML = '';
 
-        relevantLaws.innerHTML = `
-            <h3 class="font-semibold mb-2">相关法律法规：</h3>
+        resultHTML += `<div class="mb-6">
+            <h3 class="text-xl font-semibold mb-2">识别到的问题：</h3>
             <ul class="list-disc pl-5">
-                ${data.relevant_laws.map(law => `<li>${law}</li>`).join('')}
+                ${data.identified_issues.map(issue => `<li class="mb-1">${issue}</li>`).join('')}
             </ul>
-        `;
+        </div>`;
 
+        resultHTML += `<div class="mb-6">
+            <h3 class="text-xl font-semibold mb-2">相关法规：</h3>
+            <ul class="list-disc pl-5">
+                ${data.relevant_regulations.map(reg => `<li class="mb-1">${reg}</li>`).join('')}
+            </ul>
+        </div>`;
+
+        resultHTML += `<div class="mb-6">
+            <h3 class="text-xl font-semibold mb-2">解释：</h3>
+            <ul class="list-disc pl-5">
+                ${data.explanations.map(exp => `<li class="mb-1">${exp}</li>`).join('')}
+            </ul>
+        </div>`;
+
+        resultHTML += `<div class="mb-6">
+            <h3 class="text-xl font-semibold mb-2">建议：</h3>
+            <ul class="list-disc pl-5">
+                ${data.recommendations.map(rec => `<li class="mb-1">${rec}</li>`).join('')}
+            </ul>
+        </div>`;
+
+        analysisContent.innerHTML = resultHTML;
         result.classList.remove('hidden');
     }
 });
