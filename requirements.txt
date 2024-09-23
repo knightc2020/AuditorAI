@@ -1,0 +1,6 @@
+flask
+sqlalchemy
+transformers
+torch
+spacy
+gunicorn

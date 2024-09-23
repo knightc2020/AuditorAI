@@ -79,6 +79,7 @@ class ComplianceAuditor:
             preprocessed_text = self.preprocess_text(text)
             logger.info(f"Preprocessed text length: {len(preprocessed_text)}")
             
+            # Check if the assessment exists in the database
             cached_result = get_assessment_by_input(preprocessed_text)
             if cached_result:
                 logger.info("Result found in database")
@@ -94,6 +95,7 @@ class ComplianceAuditor:
             
             detailed_result = self.generate_detailed_result(issues)
             
+            # Store the new assessment in the database
             add_assessment(preprocessed_text, detailed_result["identified_issues"], detailed_result["relevant_regulations"])
 
             logger.info(f"Analysis result: {detailed_result}")
