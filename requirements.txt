@@ -1,6 +1,6 @@
 flask
 sqlalchemy
-transformers
-torch
+transformers[torch]
 spacy
 gunicorn
+https://github.com/explosion/spacy-models/releases/download/zh_core_web_sm-3.5.0/zh_core_web_sm-3.5.0.tar.gz

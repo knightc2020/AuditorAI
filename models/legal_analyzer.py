@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 class ComplianceAuditor:
     def __init__(self):
         logger.info("Initializing ComplianceAuditor")
-        self.model_name = "hfl/chinese-roberta-wwm-ext"
+        self.model_name = "bert-base-chinese"
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         self.max_length = 512
         self.issue_categories = {
