@@ -5,8 +5,10 @@ from models.legal_analyzer import ComplianceAuditor
 from werkzeug.exceptions import RequestTimeout
 import time
 from database import add_assessment, get_assessment_by_input
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 compliance_auditor = ComplianceAuditor()
 
 # Configure logging
@@ -53,6 +55,38 @@ def analyze():
         logger.error(f"Error during analysis: {str(e)}", exc_info=True)
         return jsonify({"error": "分析过程中出现错误，请稍后重试"}), 500
 
+@app.route("/api/v1/analyze", methods=["POST"])
+def api_analyze():
+    start_time = time.time()
+    timeout = 30  # Set timeout to 30 seconds
+
+    try:
+        data = request.get_json()
+        if not data or 'input' not in data:
+            return jsonify({"error": "Invalid input. Please provide 'input' field."}), 400
+
+        user_input = data['input']
+        logger.info(f"API received input: {user_input[:100]}...")  # Log the first 100 characters of input
+
+        logger.info("Analyzing input")
+        analysis_result = compliance_auditor.analyze(user_input)
+        logger.info(f"Analysis result: {analysis_result}")
+
+        # Check if the request has exceeded the timeout
+        if time.time() - start_time > timeout:
+            logger.error("Analysis timed out")
+            raise RequestTimeout("Analysis timed out. Please try with shorter input or try again later.")
+
+        logger.info("API analysis completed successfully")
+        return jsonify(analysis_result)
+
+    except RequestTimeout as e:
+        logger.error(f"API request timed out: {str(e)}")
+        return jsonify({"error": str(e)}), 408
+    except Exception as e:
+        logger.error(f"Error during API analysis: {str(e)}", exc_info=True)
+        return jsonify({"error": "An error occurred during analysis. Please try again later."}), 500
+
 @app.route("/test_database", methods=["GET"])
 def test_database():
     try:
@@ -77,6 +111,10 @@ def test_database():
     except Exception as e:
         logger.error(f"Error during database test: {str(e)}", exc_info=True)
         return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route("/api/v1/docs")
+def api_docs():
+    return render_template("api_docs.html")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

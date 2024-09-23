@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Compliance Checker API Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
+    <header class="bg-blue-600 text-white p-4">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-bold">Legal Compliance Checker API Documentation</h1>
+        </div>
+    </header>
+    <main class="container mx-auto mt-8 p-4">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold mb-4">API Endpoints</h2>
+            
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-2">Analyze Legal Compliance</h3>
+                <p class="mb-2"><strong>Endpoint:</strong> <code class="bg-gray-200 p-1 rounded">/api/v1/analyze</code></p>
+                <p class="mb-2"><strong>Method:</strong> POST</p>
+                <p class="mb-2"><strong>Description:</strong> Analyze the given text for potential legal compliance issues.</p>
+                
+                <h4 class="text-lg font-semibold mt-4 mb-2">Request Body:</h4>
+                <pre class="bg-gray-200 p-4 rounded mb-4">
+{
+    "input": "Your text to analyze here"
+}
+                </pre>
+                
+                <h4 class="text-lg font-semibold mt-4 mb-2">Response:</h4>
+                <pre class="bg-gray-200 p-4 rounded mb-4">
+{
+    "identified_issues": ["Issue 1", "Issue 2", ...],
+    "relevant_regulations": ["Regulation 1", "Regulation 2", ...],
+    "explanations": ["Explanation 1", "Explanation 2", ...],
+    "recommendations": ["Recommendation 1", "Recommendation 2", ...]
+}
+                </pre>
+                
+                <h4 class="text-lg font-semibold mt-4 mb-2">Error Responses:</h4>
+                <ul class="list-disc pl-5">
+                    <li><strong>400 Bad Request:</strong> Invalid input</li>
+                    <li><strong>408 Request Timeout:</strong> Analysis timed out</li>
+                    <li><strong>500 Internal Server Error:</strong> An error occurred during analysis</li>
+                </ul>
+            </div>
+            
+            <div class="mt-8">
+                <h3 class="text-xl font-semibold mb-2">Example Usage</h3>
+                <pre class="bg-gray-200 p-4 rounded mb-4">
+curl -X POST -H "Content-Type: application/json" -d '{"input": "我的公司正在考虑扩大业务范围，包括处理个人数据。"}' https://your-api-url.com/api/v1/analyze
+                </pre>
+            </div>
+        </div>
+    </main>
+    <footer class="bg-gray-200 text-center p-4 mt-8">
+        <p>&copy; 2024 Legal Compliance Checker API. All rights reserved.</p>
+    </footer>
+</body>
+</html>
