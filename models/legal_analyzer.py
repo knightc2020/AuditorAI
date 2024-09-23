@@ -23,7 +23,8 @@ class ComplianceAuditor:
             8: "供应链管理",
             9: "产品质量与安全"
         }
-        self.model = AutoModelForSequenceClassification.from_pretrained(self.model_name, num_labels=len(self.issue_categories))
+        self.model = AutoModelForSequenceClassification.from_pretrained(self.model_name, num_labels=len(self.issue_categories), torchscript=True)
+        self.model.eval()
         self.regulations = {
             "财务合规": {
                 "《企业会计准则》": ["第1号-存货", "第6号-无形资产", "第22号-金融工具确认和计量"],
@@ -79,7 +80,6 @@ class ComplianceAuditor:
             preprocessed_text = self.preprocess_text(text)
             logger.info(f"Preprocessed text length: {len(preprocessed_text)}")
             
-            # Check if the assessment exists in the database
             cached_result = get_assessment_by_input(preprocessed_text)
             if cached_result:
                 logger.info("Result found in database")
@@ -95,7 +95,6 @@ class ComplianceAuditor:
             
             detailed_result = self.generate_detailed_result(issues)
             
-            # Store the new assessment in the database
             add_assessment(preprocessed_text, detailed_result["identified_issues"], detailed_result["relevant_regulations"])
 
             logger.info(f"Analysis result: {detailed_result}")
