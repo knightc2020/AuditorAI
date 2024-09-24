@@ -16,6 +16,7 @@ sqlalchemy = "^2.0.34"
 werkzeug = "^3.0.4"
 blinker = "1.6.2"
 flask-cors = "^5.0.0"
+gunicorn = "^23.0.0"
 
 
 [build-system]
