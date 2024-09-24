@@ -90,7 +90,8 @@ class ComplianceAuditor:
             with torch.no_grad():
                 outputs = self.model(**inputs)
             
-            top_3_indices = torch.topk(outputs.logits, k=3, dim=1).indices[0].tolist()
+            logits = outputs[0] if isinstance(outputs, tuple) else outputs.logits
+            top_3_indices = torch.topk(logits, k=3, dim=1).indices[0].tolist()
             issues = [self.issue_categories[idx] for idx in top_3_indices]
             
             detailed_result = self.generate_detailed_result(issues)
