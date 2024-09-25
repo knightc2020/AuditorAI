@@ -7,16 +7,17 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-flask = "^3.0.3"
-transformers = "^4.44.2"
-spacy = "^3.7.6"
-torch = "^2.4.1"
-psycopg2-binary = "^2.9.9"
-sqlalchemy = "^2.0.34"
+flask = "2.3.2"
+transformers = "4.31.0"
+spacy = "3.6.0"
+torch = "2.0.1"
+psycopg2-binary = "2.9.6"
+sqlalchemy = "2.0.19"
 werkzeug = "^3.0.4"
 blinker = "1.6.2"
-flask-cors = "^5.0.0"
-gunicorn = "^23.0.0"
+flask-cors = "4.0.0"
+gunicorn = "21.2.0"
+requests = "2.31.0"
 
 
 [build-system]
